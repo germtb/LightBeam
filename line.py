@@ -1,3 +1,5 @@
+from math import pi, atan
+
 from drawable import Drawable
 from vector2D import Vector2D
 
@@ -18,19 +20,27 @@ class Line(Drawable):
         return lambda t: self.start + (self.end - self.start) * t
 
     def contains(self, point):
+        if not Line(self.start, point).is_parallel(self):
+            return False
         return True if 0.0 <= self.parametric(point) <= 1.0 else False
 
+    @property
+    def delta_x(self):
+        return self.end.x - self.start.x
+
+    @property
+    def delta_y(self):
+        return self.end.y - self.start.y
+
+    @property
+    def angle(self):
+        if self.delta_x == 0:
+            return pi / 2 if self.delta_y > 0 else - pi / 2
+
+        return atan(self.delta_y / self.delta_x)
+
     def is_parallel(self, line):
-        x1 = self.start.x
-        y1 = self.start.y
-        x2 = self.end.x
-        y2 = self.end.y
-        x3 = line.start.x
-        y3 = line.start.y
-        x4 = line.end.x
-        y4 = line.end.y
-        denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
-        return True if denominator == 0 else False
+        return self.angle == line.angle
 
     def __str__(self):
         return 'start=' + str(self.start) + ', end=' + str(self.end) + ')'
@@ -65,10 +75,11 @@ class Line(Drawable):
     def __eq__(self, other):
         return self.start == other.start and self.end == other.end
 
-    def plot(self, resolution=100):
+    def draw(self, resolution=100):
         import pylab
+
         a = pylab.linspace(0, 1, resolution)
-        pylab.plot(self.as_lambda(a).x, self.as_lambda(a).y, color='b')
+        pylab.plot(self.as_lambda(a).x, self.as_lambda(a).y, color='r')
 
 
 import unittest
@@ -87,7 +98,10 @@ class LineTests(unittest.TestCase):
         self.assertEqual(self.l1.parametric(Vector2D(1, 1)), 0.0)
 
     def test_contains(self):
-        self.assertTrue(self.l1.contains(Vector2D(1, 1)))
+        self.assertTrue(self.l3.contains(Vector2D(0.5, 0.5)))
+
+    def test_not_contains(self):
+        self.assertFalse(self.l3.contains(Vector2D(0.5, 0.6)))
 
     def test_is_parallel(self):
         self.assertTrue(self.l1, self.l3)

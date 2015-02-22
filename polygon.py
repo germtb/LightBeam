@@ -1,5 +1,5 @@
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 
 from drawable import Drawable
 from line import Line
@@ -72,9 +72,13 @@ class Polygon(Drawable):
             s += str(p) + "\n"
         return s
 
-    def plot(self, resolution=100):
-        for l in self.lines():
-            l.plot(resolution)
+    def draw(self, resolution=100):
+        from matplotlib.patches import Polygon
+        import matplotlib.pyplot as plt
+        xs = map(lambda p: p.x, self.points)
+        ys = map(lambda p: p.y, self.points)
+        poly = Polygon(list(zip(xs, ys)))
+        plt.gca().add_patch(poly)
 
 import unittest
 
@@ -96,7 +100,6 @@ class LineTests(unittest.TestCase):
         intersections = self.p.intersections(self.l1)
         self.assertEqual(intersections[0], Vector2D(0, 0.5))
         self.assertEqual(intersections[1], Vector2D(1, 0.5))
-
 
 if __name__ == '__main__':
     unittest.main()

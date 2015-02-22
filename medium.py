@@ -1,3 +1,8 @@
+from math import tan, pi, cos, sin
+from ray import Ray
+from vector2D import Vector2D
+
+
 class Medium:
     def __init__(self, refractive_index, polygon):
         self.refractiveIndex = refractive_index
@@ -25,5 +30,8 @@ class Reflector(Medium):
         super().__init__(refractive_index, polygon)
 
     def on_hit(self, ray, hit_point):
-        line = filter(lambda l: l.contains(hit_point), self.polygon.lines())
-        pass
+        line = filter(lambda l: l.contains(hit_point), self.polygon.lines()).__next__()
+        alpha = line.angle
+        beta = ray.line(distance=1).angle
+        new_angle = pi / 2 - beta - alpha
+        return [Ray(Vector2D(cos(new_angle), sin(new_angle)), hit_point, ray.energy, ray.phase)]

@@ -24,9 +24,12 @@ class Polygon(Drawable):
 
     def intersections(self, line):
         intersections = []
+
         for l in self.lines():
             i = l.intersection(line)
             if i is not None:
+                if i == line.start or i == line.end:
+                    continue
                 intersections.append(i)
         return intersections
 

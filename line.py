@@ -22,6 +22,7 @@ class Line(Drawable):
     def contains(self, point):
         if not Line(self.start, point).is_parallel(self):
             return False
+
         return True if 0.0 <= self.parametric(point) <= 1.0 else False
 
     @property
@@ -37,10 +38,27 @@ class Line(Drawable):
         if self.delta_x == 0:
             return pi / 2 if self.delta_y > 0 else - pi / 2
 
-        return atan(self.delta_y / self.delta_x)
+        return atan(self.slope)
+
+    @property
+    def slope(self):
+        return self.delta_y / self.delta_x
+
+    @property
+    def origin(self):
+        return self.start.y - self.start.x * self.slope
 
     def is_parallel(self, line):
-        return self.angle == line.angle
+        x1 = self.start.x
+        y1 = self.start.y
+        x2 = self.end.x
+        y2 = self.end.y
+        x3 = line.start.x
+        y3 = line.start.y
+        x4 = line.end.x
+        y4 = line.end.y
+        denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+        return abs(denominator) < 1e-3
 
     def __str__(self):
         return 'start=' + str(self.start) + ', end=' + str(self.end) + ')'
@@ -109,6 +127,7 @@ class LineTests(unittest.TestCase):
     def test_intersection(self):
         intersection = self.l2.intersection(self.l3)
         self.assertEqual(intersection, Vector2D(0.5, 0.5))
+
 
 if __name__ == '__main__':
     unittest.main()

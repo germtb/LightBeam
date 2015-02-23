@@ -1,5 +1,6 @@
 from cmath import sqrt
 from math import hypot
+from utils import near_equal
 
 
 class Vector2D:
@@ -21,6 +22,9 @@ class Vector2D:
         x = 0 if self.x == 0 else 1 / self.x
         y = 0 if self.y == 0 else 1 / self.y
         return Vector2D(x, y) * (1 / Vector2D(x, y).dot(self))
+
+    def close(self, point):
+        return near_equal(self.x, point.x) and near_equal(self.y, point.y)
 
     def __repr__(self, *args, **kwargs):
         return '(' + str(self.x) + ', ' + str(self.y) + ')'
@@ -66,13 +70,14 @@ class Vector2DTests(unittest.TestCase):
         self.assertEqual(self.v1 - self.v2, Vector2D(-1, -1))
 
     def test_inverse(self):
-        self.assertEqual(self.v3.inverse(), Vector2D(1/3, 0))
+        self.assertEqual(self.v3.inverse(), Vector2D(1 / 3, 0))
 
     def test_mul(self):
         self.assertEqual(self.v1 * 2, Vector2D(2, 2))
 
     def test_sum(self):
         self.assertEqual(self.v1 + self.v2, Vector2D(3, 3))
+
 
 if __name__ == '__main__':
     unittest.main()

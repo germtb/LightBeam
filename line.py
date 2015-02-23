@@ -37,7 +37,6 @@ class Line(Drawable):
     def angle(self):
         if self.delta_x == 0:
             return pi / 2 if self.delta_y > 0 else - pi / 2
-
         return atan(self.slope)
 
     @property

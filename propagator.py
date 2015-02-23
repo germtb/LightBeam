@@ -12,7 +12,7 @@ class Propagator:
 class SimplePropagator(Propagator):
     def propagate(self, ray, mediums, distance=1000, accumulator=0):
         if accumulator > 100:
-            return
+            raise Exception("Too many iterations")
 
         line = ray.line(1000)
         hit_points = []

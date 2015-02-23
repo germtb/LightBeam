@@ -1,4 +1,4 @@
-from math import tan, pi, cos, sin
+from math import pi, cos, sin
 from ray import Ray
 from vector2D import Vector2D
 

@@ -33,7 +33,7 @@ class Vector2D:
         return '(' + str(self.x) + ', ' + str(self.y) + ')'
 
     def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
+        return self.close(other)
 
     def __add__(self, other):
         return type(self)(self.x + other.x, self.y + other.y)

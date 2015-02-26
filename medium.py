@@ -1,4 +1,5 @@
 from math import pi, cos, sin
+from matrix2D import Matrix
 from ray import Ray
 from vector2D import Vector2D
 
@@ -32,6 +33,8 @@ class Reflector(Medium):
     def on_hit(self, ray, hit_point):
         line = filter(lambda l: l.contains(hit_point), self.polygon.lines()).__next__()
         alpha = line.angle
-        beta = ray.line(distance=1).angle
-        new_angle = pi / 2 - beta - alpha
-        return [Ray(Vector2D(cos(new_angle), sin(new_angle)), hit_point, ray.energy, ray.phase)]
+        if alpha > pi:
+            alpha -= pi
+        reflection_matrix = Matrix.reflection_matrix(alpha)
+        new_direction = reflection_matrix.dot(ray.direction)
+        return [Ray(new_direction, hit_point, ray.energy, ray.phase)]

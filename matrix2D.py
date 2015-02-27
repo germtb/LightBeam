@@ -42,11 +42,11 @@ class Matrix:
         return Vector2D(v1, v2)
 
     @staticmethod
-    def rotation_matrix(alpha):
-        a = cos(alpha)
-        b = sin(alpha)
-        c = -sin(alpha)
-        d = cos(alpha)
+    def rotation_matrix(angle):
+        a = cos(angle)
+        b = sin(angle)
+        c = -sin(angle)
+        d = cos(angle)
         return Matrix(a, b, c, d)
 
     @staticmethod

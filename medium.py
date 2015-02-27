@@ -1,16 +1,20 @@
-from math import pi, cos, sin
+from math import pi
+
+from drawable import Drawable
 from matrix2D import Matrix
 from ray import Ray
-from vector2D import Vector2D
 
 
-class Medium:
+class Medium(Drawable):
     def __init__(self, refractive_index, polygon):
         self.refractiveIndex = refractive_index
         self.polygon = polygon
 
     def on_hit(self, ray, hit_point):
         pass
+
+    def draw(self, resolution=100):
+        self.polygon.draw(resolution)
 
 
 class Detector(Medium):

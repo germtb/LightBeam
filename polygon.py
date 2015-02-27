@@ -1,8 +1,10 @@
+from cmath import pi
 import re
 from collections import OrderedDict
 
 from drawable import Drawable
 from line import Line
+from matrix2D import Matrix
 from vector2D import Vector2D
 
 
@@ -50,6 +52,21 @@ class Polygon(Drawable):
                     return False
         return True
 
+    def rotated(self, angle):
+        rotation_matrix = Matrix.rotation_matrix(angle)
+        points = []
+        for p in self.points:
+            points.append(rotation_matrix.dot(p))
+        return Polygon(*points)
+
+    @staticmethod
+    def circle(radius=1, resolution=100):
+        points = [Vector2D(radius, 0)]
+        rotation_matrix = Matrix.rotation_matrix(2 * pi / resolution)
+        for angle in range(1, 100):
+            new_point = rotation_matrix.dot(points[-1])
+            points.append(new_point)
+        return Polygon(*points)
 
     @staticmethod
     def from_file(file_path):
@@ -78,10 +95,12 @@ class Polygon(Drawable):
     def draw(self, resolution=100):
         from matplotlib.patches import Polygon
         import matplotlib.pyplot as plt
+
         xs = map(lambda p: p.x, self.points)
         ys = map(lambda p: p.y, self.points)
         poly = Polygon(list(zip(xs, ys)))
         plt.gca().add_patch(poly)
+
 
 import unittest
 
@@ -103,6 +122,7 @@ class LineTests(unittest.TestCase):
         intersections = self.p.intersections(self.l1)
         self.assertEqual(intersections[0], Vector2D(0, 0.5))
         self.assertEqual(intersections[1], Vector2D(1, 0.5))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -35,7 +35,7 @@ class SimplePropagator(Propagator):
             l.draw()
 
     def propagate(self, ray, mediums, distance=100, accumulator=0):
-        if accumulator > 100:
+        if accumulator > 1000:
             return
         line = ray.line(distance)
         hit_points = OrderedDict()

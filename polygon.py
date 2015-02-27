@@ -63,7 +63,7 @@ class Polygon(Drawable):
     def circle(radius=1, resolution=100):
         points = [Vector2D(radius, 0)]
         rotation_matrix = Matrix.rotation_matrix(2 * pi / resolution)
-        for angle in range(1, 100):
+        for angle in range(1, resolution):
             new_point = rotation_matrix.dot(points[-1])
             points.append(new_point)
         return Polygon(*points)

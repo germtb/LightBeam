@@ -18,7 +18,7 @@ axis([-3, 3, -3, 3])
 detector = Detector(1.0, polygon.Polygon.circle(1.1, resolution=100))
 detector.draw()
 mediums = [detector]
-base_polygon = polygon.Polygon.from_file('lobster_eye.pol')
+base_polygon = polygon.Polygon.from_file('shapes/lobster_eye.pol')
 
 for angle in arange(0, 2 * pi, 0.05):
     p = base_polygon.rotated(angle)
